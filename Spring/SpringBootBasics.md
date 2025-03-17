@@ -1,5 +1,5 @@
 # Spring Boot Basics
-This course is a beginner-friendly introduction to Spring Boot. It covers the basics of Spring Boot, including setting up a new project, dependency injection, and connecting to databases.
+This course is a beginner-friendly introduction to Spring Boot. It covers the basics of Spring Boot, including setting up a new project, dependency injection, and database integration.
 
 This course is a Code With Mosh - [Spring Boot: Mastering the Fundamentals](https://members.codewithmosh.com/courses/enrolled/2741443).
 
@@ -46,7 +46,12 @@ Some annotations we've learned:
   - root of website is ("/")
   - the return statement of a requestmapping method is the name of the view we want to display
 
+Running the project:
+- fist add maven wrapper: ./mvnw -v
+- then run the project: ./mvnw spring-boot:run
+
 ## Dependency Injection
 ### What is Dependency Injection?
-- Dependency Injection is a design pattern used to create loosely coupled components in a system.
-  - What does this mean? 
+Dependency Injection is a design pattern used to create loosely coupled components in a system.
+
+What does this mean? 
