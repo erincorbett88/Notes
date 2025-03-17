@@ -6,7 +6,7 @@ This course is a Code With Mosh - [Spring Boot: Mastering the Fundamentals](http
 Related repositories:
 - [SpringBootStore](https://github.com/erincorbett88/SpringBootStore)
 
-## Getting Started with Spring Boot ddd
+## Getting Started with Spring Boot
 ### Spring Framework: Introduction
 - Spring is a framework for building Java applications
 - Involves a lot of modules to handle specific tasks. There's:
@@ -33,7 +33,7 @@ used Maven to set up the project and it yielded the following files:
 - if you upgrade springboot, this means all dependency versions will automatically be updated, as well
 - therefore, removing version is best practice; let springboot manage the versions _for_ us
 ### Building a Controller
-Spring MVC: the basics of how we handle web requests in springboot. We follow the Model-View-Controller pattern, which is a clean way
+Spring MVC: the basics of how we handle web requests in springboot. We follow the Model-View-Controller pattern, which is a clean way to organize our code.
 - Model: data and logic. It's usually connected to data source. In springboot, this can be a simple java class.
 - View: what the user sees. Can be dynamically generated using tools like Thymeleaf.
 - Controller: a mediator that handles incoming requests from the user, interacts with the model to get the data, and then tells the view what to display.
