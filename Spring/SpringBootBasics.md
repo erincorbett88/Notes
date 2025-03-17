@@ -33,12 +33,11 @@ used Maven to set up the project and it yielded the following files:
 - if you upgrade springboot, this means all dependency versions will automatically be updated, as well
 - therefore, removing version is best practice; let springboot manage the versions _for_ us
 ### Building a Controller
-- Spring MVC: the basics of how we handle web requests in springboot
-- Model-View-Controller. It's a clean way
-  - Model: data and logic. It's usually connected to data source. In springboot, this can be a simple java class.
-  - View: what the user sees. Can be dynamically generated using tools like Thymeleaf.
-  - Controller: a mediator that handles incoming requests from the user, interacts with the model to get the data, and then tells the view what to display.
-- 
+Spring MVC: the basics of how we handle web requests in springboot. We follow the Model-View-Controller pattern, which is a clean way
+- Model: data and logic. It's usually connected to data source. In springboot, this can be a simple java class.
+- View: what the user sees. Can be dynamically generated using tools like Thymeleaf.
+- Controller: a mediator that handles incoming requests from the user, interacts with the model to get the data, and then tells the view what to display.
+
 
 ## Dependency Injection
 ### What is Dependency Injection?
