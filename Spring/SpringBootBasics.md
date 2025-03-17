@@ -33,7 +33,7 @@ used Maven to set up the project and it yielded the following files:
 
 We're using Maven for this project. It is a "build tool." It's more widely used and has been around longer. Gradle is more modern and more optimized for performance, so it's also a good option.
 ### Dependency Management
-- PRO TIP: If you remove the  from a dependency, if it is nested in a <parent> tag, then maven will automatically download the latest version of that dependency.
+- PRO TIP: If you remove the version line from a dependency, if it is nested in a <parent> tag, then maven will automatically download the latest version of that dependency.
 - this can simplify our pom file
 - if you upgrade springboot, this means all dependency versions will automatically be updated, as well
 - therefore, removing version is best practice; let springboot manage the versions _for_ us
