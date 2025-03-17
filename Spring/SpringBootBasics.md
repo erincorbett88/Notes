@@ -45,10 +45,17 @@ Some annotations we've learned:
   - have to give it a path, so it knows what to do
   - root of website is ("/")
   - the return statement of a requestmapping method is the name of the view we want to display
+- **@Value** - injects a value from the application.properties file into a variable
+  - allows us to store configuration values in a file, rather than hardcoding them
+  - this is a good practice, because it allows us to change the configuration without changing the code
 
 Running the project:
-- fist add maven wrapper: ./mvnw -v
+- first add maven wrapper: ./mvnw -v
 - then run the project: ./mvnw spring-boot:run
+
+### Debugging
+
+This course contains a wonderful introduction to debugging. Didn't feel like taking notes.
 
 ## Dependency Injection
 ### What is Dependency Injection?
