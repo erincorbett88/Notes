@@ -6,7 +6,7 @@ This course is a Code With Mosh - [Spring Boot: Mastering the Fundamentals](http
 Related repositories:
 - [SpringBootStore](https://github.com/erincorbett88/SpringBootStore)
 
-## Getting Started with Spring Boot
+## Getting Started with Spring Boot ddd
 ### Spring Framework: Introduction
 - Spring is a framework for building Java applications
 - Involves a lot of modules to handle specific tasks. There's:
