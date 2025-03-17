@@ -23,15 +23,22 @@ When you first create a new SpringBoot project (either using IntelliJ built in t
 project that generates a project automatically. It features several automatic files. In this example, we
 used Maven to set up the project and it yielded the following files:
 - .idea: config files, only used by intellij
+- scr/main/java: where we put our java code
+- src/main/resources: stores configuration files (like application.properties or application.yml)
 - .mvn: this is part of the maven wrapper. It's a way to run maven without requiring local installation. In intellij, Maven is built-in, so we don't have to install it locally.
 - help.md: markdown that includes instructions for getting started (ok to ignore)
 - pom.xml: ***this is the heart of a maven project***. It's an XML file that contains all the dependencies and configurations for the project. It's where you define the project's structure and dependencies.
   - stands for "project object model"
+  - in a gradle project, the equivalent file is build.gradle
+
+We're using Maven for this project. It is a "build tool." It's more widely used and has been around longer. Gradle is more modern and more optimized for performance, so it's also a good option.
 ### Dependency Management
-- PRO TIP: If you remove <version> from a dependency, if it is nested in a <parent> tag, then maven will automatically download the latest version of that dependency.
+- PRO TIP: If you remove the  from a dependency, if it is nested in a <parent> tag, then maven will automatically download the latest version of that dependency.
 - this can simplify our pom file
 - if you upgrade springboot, this means all dependency versions will automatically be updated, as well
 - therefore, removing version is best practice; let springboot manage the versions _for_ us
+
+Spring has ***Spring Boot Starters***, which is a set of predetermined libraries that Spring has tested and _knows_ they work well together. It just bundles commonly used libraries. For this project, we used ***web starter.***
 ### Building a Controller
 Spring MVC: the basics of how we handle web requests in springboot. We follow the Model-View-Controller pattern, which is a clean way to organize our code.
 - Model: data and logic. It's usually connected to data source. In springboot, this can be a simple java class.
