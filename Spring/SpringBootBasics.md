@@ -39,8 +39,8 @@ Spring MVC: the basics of how we handle web requests in springboot. We follow th
 - Controller: a mediator that handles incoming requests from the user, interacts with the model to get the data, and then tells the view what to display.
 
 Some annotations we've learned:
-- @Controller: tells spring that this class is a controller
-- @RequestMapping: when we send a request to the root of our qebsite, we want this method to be called. @RequestMapping says to call this method.
+- **@Controller**: tells spring that this class is a controller
+- **@RequestMapping**: when we send a request to the root of our website, we want this method to be called. @RequestMapping says to call this method.
   - part of "web starter" dependency
   - have to give it a path, so it knows what to do
   - root of website is ("/")
