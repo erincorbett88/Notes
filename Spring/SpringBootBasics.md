@@ -1,4 +1,7 @@
 # Spring Boot Basics
+This course is a beginner-friendly introduction to Spring Boot. It covers the basics of Spring Boot, including setting up a new project, dependency injection, and connecting to databases.
+
+This course is a Code With Mosh - [Spring Boot: Mastering the Fundamentals](https://members.codewithmosh.com/courses/enrolled/2741443). 
 
 ## Getting Started with Spring Boot
 ### Spring Framework: Introduction
