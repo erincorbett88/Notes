@@ -71,10 +71,22 @@ Dependency Injection is a design pattern used to create loosely coupled componen
 What does this mean? 
 
 ### What is Dependency Injection (DI)?
-- There are two examples to consider
-  -  d
-  -  DASDF 
-- 
+
+To understand this concept, we really have to understand what it means to be "dependent," and also what it means to be "tightly coupled." Think of two examples:
+- Order service
+  - Consider an online store that has an "OrderService." When a customer places an order, it uses this order service. However, we need another service to process payments. 
+  - If we're using Stripe, then the service is "StripePaymentService."
+  - However, there's a tight coupling here between OrderService and StripePaymentService. It's true that we're dependent on _some_ payment service, but it doesn't _have_ to be Stripe...
+  - if we want to switch to Paypal, does that mean we have to rewrite the OrderService?
+- Restaurant
+  - Restaurants are dependent on Chefs, but we should be able to switch out Chefs.
+  - If we replace "Chef" with "John", that means Restaurant is tightly coupled to John specifically, instead of any chef.
+ 
+The issue isn't that dependency _exists_. Dependency is normal and inescapable. The problem is more so that the issues are _tightly coupled_. We want our OrderService to be dependent on PaymentService, not StripePaymentService.
+
+How to avoid this? Using an interface:
+- An interface is a contract that says "this PaymentService _must_ be able to do x, y, or z." That is, it must have a payment method, a credit card id number, etc.
+- The OrderService doesn't need to KNOW which _class_ is being implemented; it just calls an _interface_
 
 ### Constructor Injection
 
