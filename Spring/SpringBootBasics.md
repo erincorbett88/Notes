@@ -70,20 +70,24 @@ Dependency Injection is a design pattern used to create loosely coupled componen
 
 What does this mean? 
 
-###What is Dependency Injection (DI)?
+### What is Dependency Injection (DI)?
+- There are two examples to consider
+  -  d
+  -  DASDF 
+- 
 
-###Constructor Injection
+### Constructor Injection
 
-###Setter Injection
+### Setter Injection
 
-###The Spring IoC container
+### The Spring IoC container
 
-###Configuring Beans using annotations
+### Configuring Beans using annotations
 
-###Controlling bean selection
+### Controlling bean selection
 
-###Externalizing configurations
+### Externalizing configurations
 
-###configuring beans programatically using Lazy initialization
+### configuring beans programatically using Lazy initialization
 
-###Bean scopes and bean lifecycle methods
+### Bean scopes and bean lifecycle methods
