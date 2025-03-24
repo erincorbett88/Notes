@@ -87,6 +87,22 @@ The issue isn't that dependency _exists_. Dependency is normal and inescapable. 
 How to avoid this? Using an interface:
 - An interface is a contract that says "this PaymentService _must_ be able to do x, y, or z." That is, it must have a payment method, a credit card id number, etc.
 - The OrderService doesn't need to KNOW which _class_ is being implemented; it just calls an _interface_
+- you won't have to rewrite OrderService if you switch from Stripe to Paypal, and you don't have to write new tests, either
+
+**Dependency Injection** is where you inject an _object_ (PaymentService implementation) into a _class_ (OrderService) that needs it. This is done through the constructor, or through a setter method.
+An interface decouples the two classes, "Stripe" and "Paypal," from the OrderService. This is the essence of Dependency Injection. The interface just says "you have to do this bare minimum", etc.
+
+For example, _before_ decoupling:
+```    
+public class OrderService {
+    public void placeOrder() {
+        var paymentService = new StripePaymentService();
+        paymentService.processPayment(10);
+
+    }
+}
+```
+You can see that we can't 
 
 ### Constructor Injection
 
