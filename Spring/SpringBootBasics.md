@@ -32,6 +32,7 @@ used Maven to set up the project and it yielded the following files:
   - in a gradle project, the equivalent file is build.gradle
 
 We're using Maven for this project. It is a "build tool." It's more widely used and has been around longer. Gradle is more modern and more optimized for performance, so it's also a good option.
+
 ### Dependency Management
 - PRO TIP: If you remove the version line from a dependency, if it is nested in a <parent> tag, then maven will automatically download the latest version of that dependency.
 - this can simplify our pom file
@@ -68,9 +69,8 @@ This course contains a wonderful introduction to debugging. Didn't feel like tak
 ### What is Dependency Injection?
 Dependency Injection is a design pattern used to create loosely coupled components in a system.
 
-What does this mean? 
-
-### What is Dependency Injection (DI)?
+<details>
+<summary>### What is Dependency Injection (DI)?</summary>
 
 To understand this concept, we really have to understand what it means to be "dependent," and also what it means to be "tightly coupled." Think of two examples:
 - Order service
@@ -104,6 +104,7 @@ public class OrderService {
 ```
 You can see that we can't test OrderService without testing StripePaymentService. This is a problem. We want to test OrderService in isolation. 
 We also can't switch to Paypal without changing OrderService. So we need an interface to decouple the OrderService from the PaymentService.
+</details>
 
 ### Constructor Injection
 
