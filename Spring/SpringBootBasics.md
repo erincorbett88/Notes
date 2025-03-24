@@ -102,7 +102,8 @@ public class OrderService {
     }
 }
 ```
-You can see that we can't 
+You can see that we can't test OrderService without testing StripePaymentService. This is a problem. We want to test OrderService in isolation. 
+We also can't switch to Paypal without changing OrderService. So we need an interface to decouple the OrderService from the PaymentService.
 
 ### Constructor Injection
 
