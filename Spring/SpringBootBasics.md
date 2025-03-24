@@ -69,8 +69,7 @@ This course contains a wonderful introduction to debugging. Didn't feel like tak
 ### What is Dependency Injection?
 Dependency Injection is a design pattern used to create loosely coupled components in a system.
 
-<details>
-<summary>### What is Dependency Injection (DI)?</summary>
+### What is Dependency Injection (DI)?
 
 To understand this concept, we really have to understand what it means to be "dependent," and also what it means to be "tightly coupled." Think of two examples:
 - Order service
@@ -104,7 +103,6 @@ public class OrderService {
 ```
 You can see that we can't test OrderService without testing StripePaymentService. This is a problem. We want to test OrderService in isolation. 
 We also can't switch to Paypal without changing OrderService. So we need an interface to decouple the OrderService from the PaymentService.
-</details>
 
 ### Constructor Injection
 
