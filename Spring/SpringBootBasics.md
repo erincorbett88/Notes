@@ -105,6 +105,26 @@ You can see that we can't test OrderService without testing StripePaymentService
 We also can't switch to Paypal without changing OrderService. So we need an interface to decouple the OrderService from the PaymentService.
 
 ### Constructor Injection
+Constructor is recommended way to inject a dependency into a class. Dependency is passed as an argument to the constructor:
+```
+    private PaymentService paymentService;
+    
+    public OrderService(PaymentService paymentService) {
+        this.paymentService = paymentService;
+    }
+    
+    public void placeOrder() {
+        paymentService.processPayment(10);
+
+    }
+```
+Then, when you create a new OrderService, you provide which payment service you want to use:
+```
+    var orderService = new OrderService(new StripePaymentService());
+```
+
+This is called the **Open Closed Principle**. This principle says that _a class should be open for extension, but closed for modification_. This means that we should be able to add new functionality to a class without changing the existing code. This is what we're doing here. We can add new payment services without changing the OrderService.
+Avoiding changes to existing code helps prevent bugs and makes the code more maintainable. This is a guideline, not a rule - meant to help you build and maintain flexible software, but must be used with common sense.
 
 ### Setter Injection
 
