@@ -130,7 +130,7 @@ Avoiding changes to existing code helps prevent bugs and makes the code more mai
 ### Setter Injection
 this is another way to inject dependencies. It's not as recommended as constructor injection, but it's still useful. It's used when you have a lot of dependencies, and you don't want to have a constructor with a lot of parameters. 
 
-Remember the difference between a constructor and a setter: when a class is instantiated, the constructor is called. The setter is called after the object is created. Any values set in the constructor can only be changed through the setter. So if we set a dependency through a setter, it can be changed later for that object.
+Remember the difference between a constructor and a setter: when a class is instantiated, the constructor is called. A constructor is used to set _initial values_. The setter is called _after_ the object is created. Any values set in the constructor can only be changed through the setter. So if we set a dependency through a setter, it can be changed later for that object.
 ```
 public class OrderService {
 
@@ -209,6 +209,20 @@ Side note on annotations - we've seen a few at this point:
 - @Controller: use for marking classes as controllers for handling web requests
 
 ### Controlling bean selection
+We have two beans that implement the PaymentService interface. How does Spring know which one to use? We can use the @Primary annotation to tell Spring which bean to use by default. This is useful when you have multiple beans that implement the same interface.
+There is also the @Qualifier annotation, which is used to specify which bean to use. This is useful when you have multiple beans that implement the same interface, and you want to specify which one to use. You do this by giving every @Service a name:
+```
+@Service("stripe")
+@Service("paypal")
+```
+Then, in the OrderService class, you can specify which one to use:
+```
+    @Autowired
+    public OrderService(@Qualifier("paypal") PaymentService paymentService) {
+        this.paymentService = paymentService;
+    }
+```
+However, this does _not_ create "coupling", because the OrderService code doesn't reference the Paypal class at all. We "don't know" what the name "paypal" means or what class it's referring to.
 
 ### Externalizing configurations
 
