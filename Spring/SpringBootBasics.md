@@ -107,16 +107,17 @@ We also can't switch to Paypal without changing OrderService. So we need an inte
 ### Constructor Injection
 Constructor is recommended way to inject a dependency into a class. Dependency is passed as an argument to the constructor:
 ```
-    private PaymentService paymentService;
+public class OrderService {
+  private PaymentService paymentService;
     
-    public OrderService(PaymentService paymentService) {
-        this.paymentService = paymentService;
-    }
+  public OrderService(PaymentService paymentService) {
+      this.paymentService = paymentService;
+  }
     
-    public void placeOrder() {
-        paymentService.processPayment(10);
-
-    }
+  public void placeOrder() {
+      paymentService.processPayment(10);
+  }
+}
 ```
 Then, when you create a new OrderService, you provide which payment service you want to use:
 ```
@@ -127,6 +128,39 @@ This is called the **Open Closed Principle**. This principle says that _a class 
 Avoiding changes to existing code helps prevent bugs and makes the code more maintainable. This is a guideline, not a rule - meant to help you build and maintain flexible software, but must be used with common sense.
 
 ### Setter Injection
+this is another way to inject dependencies. It's not as recommended as constructor injection, but it's still useful. It's used when you have a lot of dependencies, and you don't want to have a constructor with a lot of parameters. 
+
+Remember the difference between a constructor and a setter: when a class is instantiated, the constructor is called. The setter is called after the object is created. Any values set in the constructor can only be changed through the setter. So if we set a dependency through a setter, it can be changed later for that object.
+```
+public class OrderService {
+
+    private PaymentService paymentService; //instance variable
+
+//    public OrderService(PaymentService paymentService) {
+//        this.paymentService = paymentService;
+//    }
+
+    public void placeOrder() {
+        paymentService.processPayment(10);
+    }
+
+    public void setPaymentService(PaymentService paymentService) {
+        this.paymentService = paymentService;
+    }
+}
+```
+We've commented out the constructor, and added a setter method. This is how you would use it:
+```
+    var orderService = new OrderService();
+    orderService.setPaymentService(new StripePaymentService());
+```
+However, it's not always recommended because what if, in the above example, you forget to set the payment service? Then you'll get a null pointer exception. This is why constructor injection is recommended. Like so:
+```
+    var orderService = new OrderService();
+    orderService.placeOrder();
+```
+Therefore, this is only recommended for optional dependencies.
+
 
 ### The Spring IoC container
 
