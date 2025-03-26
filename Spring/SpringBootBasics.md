@@ -161,15 +161,61 @@ However, it's not always recommended because what if, in the above example, you 
 ```
 Therefore, this is only recommended for optional dependencies.
 
-
 ### The Spring IoC container
+Spring can create objects and inject them into our classes automatically. Spring has an **IoC** container, that can manage the lifecycle of objects and their dependencies. This is called **Inversion of Control**. In Spring, our objects are called "beans." Spring creates beans, injects dependencies, and manages their lifecycle.
+
+_**IoC**_ stands for **Inversion of Control.** It inverts the control of creating objects and managing dependencies. With IoC, we hand over control of creating objects and injecting depencies. The "application context" is our IoC container. It'll look kind of like this:
+```
+public class Main {
+    public static void main(String[] args) {
+        var context = new AnnotationConfigApplicationContext(AppConfig.class);
+        //run method returns application context, which is our spring container
+        var orderService = context.getBean(OrderService.class);
+        orderService.placeOrder();
+    }
+}
+```
+So instead of us manually creating objects and injecting dependencies, we let Spring take care of it for us.
 
 ### Configuring Beans using annotations
+There are two ways to configure a bean - either using class or using annotations.
+
+Adding @component to our OrderService class tells Spring that we want it to manage objects of type OrderService - Spring manages this class as a bean. This is called a "component scan." Spring will scan the package for classes with @Component, @Service, @Repository, or @Controller annotations. It will then create beans for these classes and manage their lifecycle.
+We can also mark it as a @Service:
+```
+@Service
+public class OrderService {
+```
+
+Initially, we'll get this error:
+"Could not autowire. No beans of 'PaymentService' type found."
+This means we _also_ have to mark StripePaymentService and PaypalPaymentService as beans; we give them the @Service annotation.
+
+We need to know what **_@Autowired_** means, as well. It tells Spring to autowire a bean with its dependent. It is no longer necessary if you only have one constructor, but you'll see it in older codebases. However, if you have multiple constructors, you'd need it:
+```
+    public OrderService() {}
+    
+    @Autowired
+    public OrderService(PaymentService paymentService) {
+        this.paymentService = paymentService;
+    }
+```
+Above, the class has a default constructor AND a constructor with a parameter. In this case, we'll need @Autowired: it tells Spring which constructor to use. However, if we remove the default constructor, we don't need @Autowired.
+
+Side note on annotations - we've seen a few at this point:
+- @Component: general purpose annotation
+- @Service: for classes that contain business logic
+- @Repository: for classes that interact w/a database
+- @Controller: use for marking classes as controllers for handling web requests
 
 ### Controlling bean selection
 
 ### Externalizing configurations
 
-### configuring beans programatically using Lazy initialization
+### Configuring Beans Using Code
 
-### Bean scopes and bean lifecycle methods
+### Lazy Initialization
+
+### Bean Scopes
+
+### Bean Lifecycle Hooks
