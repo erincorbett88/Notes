@@ -254,6 +254,7 @@ We have seen how to configure beans using annotations. However, you can also doi
 You do this in an appConfig file, and give beans an @Bean annotation. That tells you that the method is a "bean producer:"
 ```
 @Bean
+//this names the bean "paypal"
 public PaymentService paypal() {
         return new PaypalPaymentService();
     }
@@ -273,10 +274,39 @@ This allows us to use conditional statements in our code:
     }
 ```
 
-This is also good for when we're using third party libraries that need special configurations. Then, in our PaypalPaymentService class, we _don't_ have to use the @Service or @Component annotation. We can just use the @Bean annotation in the AppConfig file.
+This is also good for when we're using third party libraries that need special configurations. Then, in our PaypalPaymentService class, we _don't_ have to use the @Service or @Component annotation. We can just use the @Bean annotation in the AppConfig file, and gives us full control over bean creation.
 
 ### Lazy Initialization
+Normally, beans are created upon starting the program automatically. However, some beans are expensive or "heavy" resources, and we don't want them created until they're needed/called. In that case, you can add a @Lazy annotation to the class. This tells Spring to only create the bean when it's needed:
+```
+@Component
+@Lazy
+public class HeavyResource {
+    public HeavyResource() {
+        System.out.println("HeavyResource Created");
+    }
+}
+```
+
+Then, it isn't created until "resource" here is called:
+```
+    public static void main(String[] args) {
+        ApplicationContext context = SpringApplication.run(StoreApplication.class, args);
+        var resource = context.getBean(HeavyResource.class);
+
+    }
+```
+
+Note: If you are creating the bean _programatically_ - that is, not using the @Service annotation on the class but using the @Bean annotation in the appConfig file - you have to also use the annotation @Lazy to one of the bean-producer methods in the config file. 
 
 ### Bean Scopes
+Are beans created once and reused, or are they created every time they're requested? This is the bean scope. That is the "rule" that determines _when_ it is created and how long the bean lives in the Spring IoC container.
+
+There are several scopes:
+- Singleton: the default scope. The bean is created once and reused every time it's requested.
+- Prototype: a new instance is created every time the bean is requested.
+- Request: a new instance is created for every HTTP request.
+- 
+
 
 ### Bean Lifecycle Hooks
