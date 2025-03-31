@@ -373,4 +373,6 @@ Spring Data JPA
 - builds on top of JPA and Hibernate
 - **provides repository interfaces** for performing common database operations; this makes database access very simple
 
+Together, these four technologies are the basis of database integration in Spring Boot/Java.
+
 ### Setting up a Databas
