@@ -336,3 +336,41 @@ There are several scopes:
   - bean is destroyed when the session is invalidated
 
 ### Bean Lifecycle Hooks
+A bean has a whole lifecycle. It is initialized, dependencies are injected, and then the bean is destroyed. This is the lifecycle of a bean. We can hook into this lifecycle to perform specific functions, like creating resources or cleaning the =m up.
+We use annotations to hook into these lifecycle events:
+- **@PostConstruct:** this method is called after the bean has been created and dependencies have been injected. It's used to initialize resources.
+  - this might be used to open a database connection or network connection, something like that. 
+- **@PreDestroy:** this method is called before the bean is destroyed. It's used to clean up resources.
+
+## Database Integration with Spring Data JPA
+### Family of Technologies;
+
+JDBC:
+- java database connectivity
+- allows java code to execute SQL queries
+- we have to manually manage everything - creating connections, closing connections, reading result, etc.
+- it's low-level and verbose, but very powerful
+
+JPA:
+- Java Persistence API
+- specification for mapping java objects to database tables
+- we don't write SQL queries, we write Java code
+- we interact directly with Java objects
+- it's high-level and easy to use - you can focus on business logic, not SQL
+- reduces boilerplate code
+- it's just a _specification_, not an implementation. Hibernate is an implementation of JPA, and so is OpenJPA, etc.
+
+Hibernate:
+- ORM - Object Relational Mapping
+- similar to Entity framework in .NET
+- we don't write SQL queries, we write Java code
+- also extends JPA and provides additional features, like caching. 
+- has its own query language
+- automatic schema generation
+- it's the most popular JPA implementation
+
+Spring Data JPA
+- builds on top of JPA and Hibernate
+- **provides repository interfaces** for performing common database operations; this makes database access very simple
+
+### Setting up a Databas
