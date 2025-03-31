@@ -225,8 +225,55 @@ Then, in the OrderService class, you can specify which one to use:
 However, this does _not_ create "coupling", because the OrderService code doesn't reference the Paypal class at all. We "don't know" what the name "paypal" means or what class it's referring to.
 
 ### Externalizing configurations
+The **@Value** annotation injects values from our configuration file (application.properties) into the code.
+We can store this in an application.properties file, or in a application.yml file. The latter is more readable, but the former is more common.
+
+properties filed:
+```
+spring.application.name=store
+stripe.apiUrl=https://api.stripe.com
+stripe.enabled=true
+stripe.timeout=1000
+stripe.supported-currencies=USD,EUR,GBP
+```
+
+application.yml file:
+```
+spring:
+  application:
+    name: store
+  stripe:
+    apiUrl: https://api.stripe.com
+    enabled: true
+    timeout: 1000
+    supported-currencies: USD, EUR, GBP
+```
 
 ### Configuring Beans Using Code
+We have seen how to configure beans using annotations. However, you can also doing this using Java code. This gives us more control.
+You do this in an appConfig file, and give beans an @Bean annotation. That tells you that the method is a "bean producer:"
+```
+@Bean
+public PaymentService paypal() {
+        return new PaypalPaymentService();
+    }
+```
+
+This allows us to use conditional statements in our code:
+```
+@Value("${payment-gateway}")
+    private String paymentGateway;
+
+@Bean
+    public OrderService orderService() {
+        if (paymentGateway.equals("stripe")) {
+            return new OrderService(stripe());
+        }
+        return new OrderService(paypal());
+    }
+```
+
+This is also good for when we're using third party libraries that need special configurations. Then, in our PaypalPaymentService class, we _don't_ have to use the @Service or @Component annotation. We can just use the @Bean annotation in the AppConfig file.
 
 ### Lazy Initialization
 
