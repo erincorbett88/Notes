@@ -303,10 +303,36 @@ Note: If you are creating the bean _programatically_ - that is, not using the @S
 Are beans created once and reused, or are they created every time they're requested? This is the bean scope. That is the "rule" that determines _when_ it is created and how long the bean lives in the Spring IoC container.
 
 There are several scopes:
-- Singleton: the default scope. The bean is created once and reused every time it's requested.
-- Prototype: a new instance is created every time the bean is requested.
-- Request: a new instance is created for every HTTP request.
-- 
-
+- **Singleton:** the default scope. The bean is created once and reused every time it's requested.
+  -  This will only produce a _single_ bean, one time: 
+  - ```
+     var orderService1 = context.getBean(OrderService.class);
+     var orderService2 = context.getBean(OrderService.class);
+     System.out.println(orderService1 == orderService2); //true
+     ```
+  - useful for stateless, reusable components like services 
+- **Prototype:** a new instance is created every time the bean is requested.
+  - useful for stateful beans, like a session bean
+  - used for components that hold state or are used temporarily
+  - ```
+        @Bean
+    @Scope("prototype")
+    public OrderService orderService() {
+        if (paymentGateway.equals("stripe")) {
+            return new OrderService(stripe());
+        }
+        return new OrderService(paypal());
+    }
+    ```
+  -now that we _have_ this code, we can see that the two beans are _not_ equal:
+- ```
+     var orderService1 = context.getBean(OrderService.class);
+     var orderService2 = context.getBean(OrderService.class);
+     System.out.println(orderService1 == orderService2); //false
+     ```
+- **Request:** a new instance is created for every HTTP request.
+  -  bean is destroyed when the request is completed
+- **Session:** a new instance is created for every HTTP session.
+  - bean is destroyed when the session is invalidated
 
 ### Bean Lifecycle Hooks
