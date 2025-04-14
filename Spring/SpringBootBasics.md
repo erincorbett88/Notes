@@ -375,4 +375,27 @@ Spring Data JPA
 
 Together, these four technologies are the basis of database integration in Spring Boot/Java.
 
-### Setting up a Databas
+## Database Integration with String Data JPA
+
+## Database
+- Designing database tables 
+  - You can use a built-in database designer in IntelliJ, or you can write raw SQL queries
+- Database migrations with Flyway
+  - Flyway is a tool for managing database migrations
+  - The benefit of using Flyway is that anyone who downloads your code can run the migrations and have the same database schema as you
+    - a "database schema" is the structure of the database, including tables, columns, and relationships
+- Change database schema by creating migrations
+  - when using Flyway, instead of making changes directly to the database, you create a migration file that describes the changes
+  - if you make a mistake, you can't alter your migration file
+  - you have to create a new migration file that undoes the changes
+- Be sure to add Flyway to your pom.xml file
+  - this is a dependency that will be used to manage database migrations
+  - Maven will download the Flyway library and add it to your classpath
+
+## Domain Model
+
+## Repositories
+
+## Custom Queries
+
+## Dynamic Queries
