@@ -391,6 +391,14 @@ Together, these four technologies are the basis of database integration in Sprin
 - Be sure to add Flyway to your pom.xml file
   - this is a dependency that will be used to manage database migrations
   - Maven will download the Flyway library and add it to your classpath
+- Create a migration file
+  - The migration file is a SQL file that contains the changes you want to make to the database schema
+  - The file name must start with "V" followed by a version number, and then a description of the changes
+  - For example, "V1__create_users_table.sql" would create a new table called "users"
+- The Maven plugin for Flyway handles things like if you accidentally delete a migration file, or if you want to run the migrations in a different order
+    - The plugin will automatically run the migrations in the correct order, and it will also keep track of which migrations have been run
+
+Note: run "mvn flyway:migrate" to run the migrations. This will create a new table in the database called "flyway_schema_history" that keeps track of which migrations have been run. That, or go to the maven window on the right side.
 
 ## Domain Model
 
