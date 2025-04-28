@@ -401,6 +401,17 @@ Together, these four technologies are the basis of database integration in Sprin
 Note: run "mvn flyway:migrate" to run the migrations. This will create a new table in the database called "flyway_schema_history" that keeps track of which migrations have been run. That, or go to the maven window on the right side.
 
 ## Domain Model
+- Defining entitites
+- Simplify entities with Lombok
+- Define relationships between entities
+- JPA Buddy
+- Model-first approach
+
+### Defining Entities
+**Entites** are classes that represent a table in our database. Every instance of the class represents a row in the database. This allows us to work with data without writing raw SQL statements for every update.
+
+JPA = "Jakarta Persistence API" (formerly Java Persistence API). It is a specification for mapping Java objects to database tables. JPA is an interface that allows us to work with data in a more object-oriented way. It is not a database itself, but rather a set of rules and guidelines for how to interact with a database.
+
 
 ## Repositories
 
