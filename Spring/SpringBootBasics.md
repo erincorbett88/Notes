@@ -1,4 +1,5 @@
 # Spring Boot Basics
+___
 This course is a beginner-friendly introduction to Spring Boot. It covers the basics of Spring Boot, including setting up a new project, dependency injection, and database integration.
 
 This course is a Code With Mosh - [Spring Boot: Mastering the Fundamentals](https://members.codewithmosh.com/courses/enrolled/2741443).
@@ -7,6 +8,7 @@ Related repositories:
 - [SpringBootStore](https://github.com/erincorbett88/SpringBootStore)
 
 ## Getting Started with Spring Boot
+___
 ### Spring Framework: Introduction
 - Spring is a framework for building Java applications
 - Involves a lot of modules to handle specific tasks. There's:
@@ -352,7 +354,7 @@ JDBC:
 - it's low-level and verbose, but very powerful
 
 JPA:
-- Java Persistence API
+- Jakarta Persistence API (formerly "Java Persistence API")
 - specification for mapping java objects to database tables
 - we don't write SQL queries, we write Java code
 - we interact directly with Java objects
@@ -377,7 +379,7 @@ Together, these four technologies are the basis of database integration in Sprin
 
 ## Database Integration with String Data JPA
 
-## Database
+### Database
 - Designing database tables 
   - You can use a built-in database designer in IntelliJ, or you can write raw SQL queries
 - Database migrations with Flyway
@@ -400,8 +402,8 @@ Together, these four technologies are the basis of database integration in Sprin
 
 Note: run "mvn flyway:migrate" to run the migrations. This will create a new table in the database called "flyway_schema_history" that keeps track of which migrations have been run. That, or go to the maven window on the right side.
 
-## Domain Model
-- Defining entitites
+### Domain Model
+- Defining entities
 - Simplify entities with Lombok
 - Define relationships between entities
 - JPA Buddy
@@ -412,9 +414,44 @@ Note: run "mvn flyway:migrate" to run the migrations. This will create a new tab
 
 JPA = "Jakarta Persistence API" (formerly Java Persistence API). It is a specification for mapping Java objects to database tables. JPA is an interface that allows us to work with data in a more object-oriented way. It is not a database itself, but rather a set of rules and guidelines for how to interact with a database.
 
+- Creating an "entity" is as simple as creating an "instance" of a class. This means we create a class that represents a table in our database. The name of the class will be the same name as the table, and the name of columns are properties within the class. They can be annotated with things like "@Id" or "@Column" to specify the primary key or other properties.
+- Lombok: a Java library that removes boilerplate code. It generates getters, setters, and constructors for us. This is useful for entities, because we don't have to write a lot of code to create a class that represents a table in our database.
+  - @Getter annotation replaces a whole bunch of getters, and @Setter does the same thing
+  - Some useful Lombok annotations
+    - @Getter: generates getters for all fields
+    - @Setter: generates setters for all fields
+    - @AllArgsConstructor: generates a constructor with all arguments
+        ```         
+        var user = new User(1L, "John Doe", "john.doe@gmail.com", "password123");
+    - @NoArgsConstructor: generates a constructor with no arguments
+        ```
+          var user = new User();
+    - @Builder: generates a builder pattern for the class so you don't have to call User.name = "John Doe", User.email=...and so on and so forth
+      ```        
+      User.builder().name("John Doe").email("jdoe@gmail.com").password("password123").build();
 
-## Repositories
+Relationships between entities:
+- One-to-Many: one entity is related to one other entity
+  - there's a concept of "ownership" - who owns the relationship?
+  - a user and an address example: you might think the user owns the address, BUT in the tables, a user doesn't have an "address" column, while the address table DOES have a "user_id" column
+  - this means the address table is the owner of the relationship
+    ```
+    @OneToMany(mappedBy = "user")
+    private List<Address> addresses = new ArrayList<>();
+    ```
+  - we put the above code in the USER table, mapping it to the name of the field that is the "owner" of the field in the ADDRESS file:
+    ```
+    @ManyToOne
+    @JoinColumn(name="user_id")
+    private User user;
+    ```
+- One-to-Many: one entity is related to many other entities
+  
 
-## Custom Queries
+### Repositories
 
-## Dynamic Queries
+
+### Custom Queries
+
+
+### Dynamic Queries
