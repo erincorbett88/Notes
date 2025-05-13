@@ -19,12 +19,22 @@ This course is a Code With Mosh - [The Ultimate Redux Course](https://members.co
 
 ## Functional Programming in JavaScript
 ___
+
+### What is Functional Programming?
+
 (as opposed to object-oriented programming or event-driven programming)
 
-- invented in 1950s but is becoming trendy
+- invented in the 1950s but is becoming trendy
 - decompose problems into smaller functions - take some input and return an output
+- doesn't mutate or change data
 
-Functions are considered **first class citizens** - can be passed as arguments to other functions. For example:
+Benefits: more concise, easier to debug/test, more scalable
+
+Cons: less intuitive for some people, more difficult to learn
+
+### Functions as First-Class Citizens
+
+Functions are considered **first class citizens**, which means they can be treated just like a variable. For example, they can be passed as arguments to other functions. For example:
 ```
 function sayHello() {
   return 'Hello, World!';
@@ -33,12 +43,66 @@ function sayHello() {
 let fn = sayHello;
 ```
 
-Here, fn doesn't _call_ sayHello, it just references it or is an "alias" for it. So we can pass fn to another function, or assign it to a variable.
-If we wanted to _call_ sayHello, we would have declared _let fn = sayHello();_. We can call sayHello by using _fn()_.
+Here, fn doesn't _call_ sayHello or get its return variable, it just references it or is an "alias" for it. So we can pass fn to another function, or assign it to a variable.  We can call sayHello by using _fn()_.
 
-### What is Functional Programming?
+If we wanted to _call_ sayHello, we would have declared _let fn = sayHello();_.
 
-### Functions as First-Class Citizens
+```
+function sayHello() {
+  return function() {
+    return 'Hello, World!';
+  }
+}
+
+let fn = sayHello();
+let message = fn()
+```
+The above code does something different. When we initialize fn, we _call_ sayHello(), but _not_ the anonymous function that it returns. so sayHello() returns, like, the outer layer of the return - just the function. When we initialize message and it calls fn(), this is when we get to access the inner layer of that return statement.
 
 ### Higher-order Functions
+
+```
+function greet(fn) {
+  console.log(fn());
+}
+
+function sayHello() {
+  return function() {
+    return 'Hello, World!';
+  }
+}
+```
+Two different examples: in first, we are passing a function into another function. In the second, we are passing a function that returns another function. So we can pass functions as arguments to other functions, and we can return functions from other functions. These are both examples of a **higher-order function**, which does one or both of these things. Higher-order functions are a key concept in functional programming..
+
+### Function Composition
+
+So if the idea of functional programming is to write a bunch of small and reuasable functions and compose them together, we can do that with function composition.
+```
+const trim = str = > str.trim();
+const wrapInDiv = str = > `<div>${str}</div>`;
+
+const input = '  Hello, World!  ';
+const result = wrapInDiv(trim(input));
+```
+_Result_ here is an example of function composition.
+
+### Composing and Piping
+
+Lodash has a built in "compose" function that works like this:
+```
+const transform = compose(wrapInDiv, toLowerCase, trim)
+transform(input);
+```
+
+Note that transform doesn't _call_ those three functions, just references them. Doesn't call them until we call transform. So we can compose functions together and then call them all at once. This is called **function composition**.
+
+We can also use **piping** to do the same thing. Piping is similar to function composition, but it passes the result of one function into the next function. So we can use _pipe_ instead of _compose_.
+```
+const transform = pipe(trim, toLowerCase, wrapInDiv)
+transform(input);
+```
+That changes the order of the functions, so we can use _pipe_ or _compose_ depending on how we want to order the functions. In this case, it doesn't matter because they are all independent of each other. Pipe lets us read them left to right. Using compose, we have to read them right to left. So it's a matter of preference.
+
+### Currying
+
 
