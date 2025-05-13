@@ -403,14 +403,8 @@ Together, these four technologies are the basis of database integration in Sprin
 Note: run "mvn flyway:migrate" to run the migrations. This will create a new table in the database called "flyway_schema_history" that keeps track of which migrations have been run. That, or go to the maven window on the right side.
 
 ### Domain Model
-- Defining entities
-- Simplify entities with Lombok
-- Define relationships between entities
-- JPA Buddy
-- Model-first approach
 
-### Defining Entities
-**Entites** are classes that represent a table in our database. Every instance of the class represents a row in the database. This allows us to work with data without writing raw SQL statements for every update.
+**Defining Entities**: **_Entites_** are classes that represent a table in our database. Every instance of the class represents a row in the database. This allows us to work with data without writing raw SQL statements for every update.
 
 JPA = "Jakarta Persistence API" (formerly Java Persistence API). It is a specification for mapping Java objects to database tables. JPA is an interface that allows us to work with data in a more object-oriented way. It is not a database itself, but rather a set of rules and guidelines for how to interact with a database.
 
@@ -431,8 +425,11 @@ JPA = "Jakarta Persistence API" (formerly Java Persistence API). It is a specifi
       User.builder().name("John Doe").email("jdoe@gmail.com").password("password123").build();
 
 Relationships between entities:
-- One-to-Many: one entity is related to one other entity
+- One-to-Many: one entity is related to many other entities
   - there's a concept of "ownership" - who owns the relationship?
+  - there's also a concept of "uni-directional" vs "bi-directional" relationships
+    - unidirectional: one entity knows about the other, but not vice versa
+    - bidirectional: both entities know about each other
   - a user and an address example: you might think the user owns the address, BUT in the tables, a user doesn't have an "address" column, while the address table DOES have a "user_id" column
   - this means the address table is the owner of the relationship
     ```
@@ -445,8 +442,46 @@ Relationships between entities:
     @JoinColumn(name="user_id")
     private User user;
     ```
-- One-to-Many: one entity is related to many other entities
-  
+    
+- Many-to-Many: many entities are related to many other entities
+  - either end can be the owner
+  - instead of using a join _column_, we use a join _table_
+  ```
+  var tag = new Tag("tag1");
+  user.getTags().add(tag); 
+  tag.getUsers().add(user);
+  ```
+  - this creates a new row in the join table
+  - however, this isn't the best way. Instead, in the user object, we can create a method that adds a tag to the user:
+  ```
+    public void addTag(Tag tag) {
+        tags.add(tag);
+        tag.getUsers().add(this);
+    }
+    ```
+    - this way, we don't have to worry about the order of the code. We can just call user.addTag(tag) and it will work.
+- One-To-One
+  - there's ownership here too
+    - look to see if something has an id that is a "pk" and "fk" in one table but only a "pk" in another table
+    - this means the first table knows about the second, but the second doesn't know about the first
+    - so the first table is the owner of the relationship
+    - demonstrate that it's the owner with the @JoinColumn annotation
+    - in this project, the profile table is the owner:
+    ```
+    @JoinColumn(name = "id")
+    @MapsId
+    private User user;
+    ```
+    - and the user is "owned", so it is "mapped by" - we have to tell Spring about the ownership:
+    ```
+    @OneToOne(mappedBy = "user")
+    ```
+    
+My basic takeaway here is that if I need to set up join columns/tables and know more about these relationships, I need to do research beyond the scope of this tutorial.
+
+Furthermore, JPABuddy can make all of this _automated_. JPABuddy can help with a **model first approach**, which is where you define the class and generate an automated database schema. This is the opposite of the **database first approach**, where you define the class and then generate the database schema.
+
+Finally, adding jpa.hibernate.create to the application.yml file will automatically create the tables for us. This is useful for development, but not for production. In production, we want to use Flyway to manage our database migrations. 
 
 ### Repositories
 
