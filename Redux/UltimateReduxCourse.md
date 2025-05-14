@@ -105,4 +105,88 @@ That changes the order of the functions, so we can use _pipe_ or _compose_ depen
 
 ### Currying
 
+Currying is a technique in functional programming where we take a function that takes multiple arguments and turn it into a function, or a series of functions, that each take one argument.
+
+To write a function to add a + b, we would normally write
+```
+function add(a, b) {
+  return a + b;
+}
+```
+But we can also write it like this:
+```
+function add(a) {
+  return function(b) {
+    return a + b;
+  }
+}
+```
+Now, when we call the function, instead of ```add(1, 2)```, we can call it using ```add(1)(2)```. The first call returns a function that takes b as an argument, and the second call passes in b. So we can call add(1) and get a function back, and then call that function with 2. This is called **currying**.
+
+This can also be done with arrow functions. Normally we would write
+```
+const add = (a, b) => a + b;
+```
+But we can also write it like this:
+```
+const add = a => b => a + b;
+```
+### Pure Functions
+
+A function is pure if, when it is given the same input, it always returns the _same result_.
+Some rules:
+- No random values
+- No current date/time
+- No global state (DOM, files, db, etc.)
+- No side effects (no changing the input, no changing the state of the program)
+- No mutations (no changing the input, no changing the state of the program)
+
+Not every function _needs_ to be pure.
+But pure functions are easier to test, easier to debug, and easier to reason about. So we should try to write pure functions whenever possible.
+```
+function isOldEnough(age) {
+  return age >= minAge;
+}
+``` 
+Here, we're relying on the minAge global variable unchanging. Alternatively:
+```
+function isOldEnough(age, minAge) {
+  return age >= minAge;
+}
+```
+This is a pure function because it doesn't rely on any external state. It takes in two arguments and returns a value based on those arguments. So we can test it easily. And as long as we pass in the same two values, it will always return the same result.
+
+### Immutability
+Immutability is the idea that we don't change the state of an object. Instead, we create a new object with the new state. This is important in functional programming because it helps us avoid side effects and makes our code easier to reason about.
+
+If we want to change an object, we create a copy and change the copy. For example:
+```
+string Name = 'John';
+string newName = Name + ' Doe';
+```
+Here, we create a new string called newName that is a copy of Name with ' Doe' added to it. We don't change the original string. This is an example of immutability.
+In contrast, if we had written:
+```
+string Name = 'John';
+Name += ' Doe';
+```
+This would change the original string, which is not immutable. So we should always try to use immutability in our code.
+Another example is with objects:
+```
+let book = {};
+book.title = 'Harry Potter';
+book.author = 'J.K. Rowling';
+```
+We can directly change the book object:
+```
+book.title = 'Harry Potter and the Sorcerer\'s Stone';
+```
+This is not immutable. Instead, we should create a new object:
+```
+let first* Book = {
+  ...book,
+  title: 'Harry Potter and the Sorcerer\'s Stone'
+};
+```
+In JavaScript, objects and arrays are _not_ immutable - it is not designed to be a "functional" language, but is rather a "multi-paradigm" language. So if you want to apply this concept, you have to do it on your own.
 
