@@ -254,3 +254,195 @@ const removed = numbers.filter(n => n !== 3);
 const updated = numbers.map(n => n===2 ? 20 : n);
 ```
 We map over the array and return a new array where the only changed value is changed where n=2. If we are working with objects instead of numbers, then we have to use the spread operator to provide a full copy of the object.
+
+### Enforcing Immutability
+
+JavaScript doesn't enforce immutability, but we can use libraries to help us with this. These libraries provide data structures that are immutable by default, so we don't have to worry about accidentally mutating our data. Some examples:
+- Immutable.js
+  - developed by Facebook
+  - gives you its own special immutable data structures
+- Immer
+  - allows you to work with plain javascript objects
+- Mori
+
+
+## Redux Fundamentals
+___
+
+### Redux Architecture
+
+- with Redux, we store all of our application state in a single store
+- the store is the single source of truth for the state, and is accessible by all parts of the UI
+- the store is read-only, so we can't change the state directly
+
+It's read only, so we can't do this:
+```
+store.currentUser.name = 'John';
+```
+
+Since we can't update the store directly, we use what's called a **reducer function.** A reducer takes the current instance of the store, and an action, and returns a new instance of the store. The reducer is a pure function, so it doesn't change the original store, but rather creates a new one with the updated state.
+
+```
+function reducer(store, action) {
+  const updated = (...store }
+}
+```
+Reducer here takes (store, action). An action just describes what is happening, in a sense.
+
+This doesn't mean that all the changes in an application take place through one single reducer. We can have multiple reducers, and we can combine them together to create a single store. This is called **reducer composition**. A part of a reducer is called a **slice**. So we can have multiple slices of the store, and each slice can have its own reducer. This is a good way to organize our code and keep it modular.
+If our store has these slices:
+``` 
+{
+  categories: [],
+  products: [],
+  cart: {},
+  user: {}
+]
+```
+Then each slice can have its own reducer. For example:
+```
+function categoriesReducer(state = [], action) {
+  switch (action.type) {
+    case 'ADD_CATEGORY':
+      return [...state, action.payload];
+    case 'REMOVE_CATEGORY':
+      return state.filter(category => category.id !== action.payload.id);
+    default:
+      return state;
+  }
+}
+```
+Each reducer is responsible for maintaining the state of and updating a specific slice of the store.
+
+So basically, three building blocks:
+1. Store: single javascript object that holds the state of the application
+2. Actions: (really, they're events!) plain javascript objects that describe what happened in the application.
+3. Reducers: (even handlers) responsible for updating a slice of the store. Pure functions, so they don't touch global state, mutate their arguments, or have any side effects. They just take the current store instance and return the updated one.
+
+When the user performs an action, we create an action object and dispatch it. The store object has a dispatch method that takes an action object and forwards it to the reducer. The reducer then returns a new store object with the updated state. This is called a **reducer function**. The action doesn't work with the reducer directly; just with the store. The store sets state internally and notifies UI components, and then UI components refresh themselves.
+
+Action => (dispatch) => Store => Reducer => Store
+
+Dispatching actions are an entry point to our store, like an entrance. 
+
+Steps to creating a Redux application:
+1. Design the store
+2. Define the actions
+3. Create a reducer
+4. Set up the store
+
+### Designing the Store
+First, we need to design the store. We need to decide what data we want to store in the store, and how we want to organize it. We can use a flat structure or a nested structure. A flat structure is easier to work with, but a nested structure is more flexible. We can also use a combination of both.
+
+This course is writing a "bug tracking" application, so we need to store the following data:
+- bugs
+- current user
+
+```
+  bugs: [
+    {
+      id: 1,
+      description: '',
+      resolved: false
+    },
+  ],
+  currentUser: {}
+```
+We can add more as we go, but for now, it looks like we have two slices (bugs and currentUsers), which means we'll want two different reducers.
+
+### Defining the Actions
+Actions are just plain javascript objects that describe what happened in the application. They have a type property, which is a string that describes the action, and a payload property, which is an object that contains any additional data we want to pass along with the action.
+
+In our app, they can:
+- add a bug
+- mark a bug as resolved
+- delete a bug
+
+An example:
+```
+{
+  type: 'ADD_BUG',
+  description: '...'
+}
+```
+
+"Type" is the only property that Redux expects, and it should be a string. It has to be serializable (like a string is), so that it can be stored on a disc.
+
+It can also have a "payload" property, which is an object that contains any additional data we want to pass along with the action. This is optional, but it's a good idea to include it if we have any additional data we want to pass along. This would be instead of the description property.
+```
+{
+  type: 'REMOVE_BUG',
+  payload: {
+    id: '1'
+  }
+}
+```
+
+Note in the adding a bug part, we only included a "description" in the payload. This is because we simply want the _minimum_ necessary information for our payload. All of the other things are computed in the reducer, where we do business logic. So while yes, to add a bug we will need the "resolved" property and the "id", we can compute those in the reducer, in the next section.
+
+### Creating a Reducer
+```
+let lastId = 0;
+
+function reducer(state = [], action) {
+  if (action.type === 'bugAdded')
+    return [
+      ...state,
+      {
+        id: ++lastId,
+        description: action.payload.description,
+        resolved: false
+      }
+    ];
+  else if (action.type === "bugRemoved")
+    return state.filter(bug => bug.id !== action.payload.id);
+  return state;
+}
+```
+Some notes on this:
+- we initialize the state to an empty array state = []. This is because when we first call this, if the store doesn't exist yet, it will return undefined.
+- We use the spread operator to create a new array with the new bug added to it. This is because we want to create a new instance of the store, not mutate the original one.
+- We use the filter method to remove a bug from the array. This is because we want to create a new instance of the store, not mutate the original one.
+- We use the action type to determine what action to take. This is because we want to be able to handle multiple actions in the same reducer.
+- We use the action payload to get the data we need to update the store. This is because we want to be able to pass additional data along with the action.
+- We return the state at the end of the function. This is because we want to be able to handle multiple actions in the same reducer, and we want to return the original state if no action is taken.
+- We use the default case to return the original state if no action is taken. This is because we want to be able to handle multiple actions in the same reducer, and we want to return the original state if no action is taken.
+- We use the lastId variable to keep track of the last id used. This is because we want to be able to add a new bug with a unique id. We increment it each time we add a new bug.
+
+This can also be written in a switch statement.
+
+### Creating the Store
+It's literally this easy:
+```
+const store= createStore(reducer);
+```
+
+### Dispatching Actions
+
+When we look at the architecture of a store, there is no "setState" property. We can only set the state of a store by dispatching an action.
+
+We can dispatch an action by calling the dispatch method on the store object. Since we created a store and created a reducer, now we can call store.dispatch to talk to the store, and the store will call the reducer. The reducer will return a new store object with the updated state.
+
+```
+store.dispatch({
+  type: 'bugAdded',
+  payload: {
+    description: 'Bug 1'
+  }
+});
+```
+
+### Subscribing to the Store
+
+
+We can subscribe to the store to get notified when the state changes. This is useful for updating the UI when the state changes. We can do this by calling the subscribe method on the store object. This takes a callback function that will be called whenever the state changes.
+
+We should be able to unsubscribe if the UI isn't going to be visible.
+
+```
+const unsubscribe = store.subscribe(() => {
+  console.log("Store changed!", store.getState());
+});
+```
+
+### Action Types
