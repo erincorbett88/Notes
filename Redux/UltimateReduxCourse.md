@@ -171,7 +171,11 @@ string Name = 'John';
 Name += ' Doe';
 ```
 This would change the original string, which is not immutable. So we should always try to use immutability in our code.
-Another example is with objects:
+
+In JavaScript, objects and arrays are _not_ immutable - it is not designed to be a "functional" language, but is rather a "multi-paradigm" language. So if you want to apply this concept, you have to do it on your own.
+
+### Updating Objects
+Say we have a book.
 ```
 let book = {};
 book.title = 'Harry Potter';
@@ -181,12 +185,72 @@ We can directly change the book object:
 ```
 book.title = 'Harry Potter and the Sorcerer\'s Stone';
 ```
-This is not immutable. Instead, we should create a new object:
+This is not immutable. Instead, we should create a new object. One way to update objects is with Object.assign:
+```
+newBook = Object.assign({}, book, { title: 'Harry Potter and the Sorcerer\'s Stone' });
+```
+Another way is to use the spread operator (more common in modern JavaScript and React):
 ```
 let first* Book = {
   ...book,
   title: 'Harry Potter and the Sorcerer\'s Stone'
 };
 ```
-In JavaScript, objects and arrays are _not_ immutable - it is not designed to be a "functional" language, but is rather a "multi-paradigm" language. So if you want to apply this concept, you have to do it on your own.
+Now, when updating objects, we have eto make sure not to provide a "shallow" copy. If we have a nested object, we need to make sure to create a new copy of the nested object as well. For example:
+```
+let book = {
+  name: "Harry Potter",
+  author: "J.K. Rowling",
+  publisher: {
+    name: "Scholastic",
+    address: "123 Main St"
+  }
+};
+``` 
+If we create a new object using the spread operator, it will only create a shallow copy of the book object. So if we change the publisher name, it will also change the original book object:
+```
+const newBook = {
+  ...book,
+  name: "Harry Potter and the Sorcerer's Stone"
+};
 
+newBook.publisher.name = "Random House";
+```
+If we do this, then in the ORIGINAL book object, the book publisher name will be "Random House". So we need to make sure to create a new copy of the nested object as well. This is called "deep cloning" or "deep copying". There are libraries that can help with this, like lodash's cloneDeep function. Or, we could use a nested spread operator:
+```
+const newBook = {
+  ...book,
+  publisher: {
+    ...book.publisher,
+    name: "Random House"
+  }
+};
+```
+### Updating Arrays
+```
+const numbers = [1, 2, 3, 4, 5];
+```
+**Adding:**
+
+Add using spread operator:
+```
+const added = [4, ...numbers];
+```
+or if you want it added in a particular place:
+```
+const index = numbers.indexOf(3);
+const added = [
+  ...numbers.slice(0, index), 
+  4, 
+  ...numbers.slice(index)
+];
+```
+**Removing:**
+```
+const removed = numbers.filter(n => n !== 3);
+```
+**Updating:**
+```
+const updated = numbers.map(n => n===2 ? 20 : n);
+```
+We map over the array and return a new array where the only changed value is changed where n=2. If we are working with objects instead of numbers, then we have to use the spread operator to provide a full copy of the object.
